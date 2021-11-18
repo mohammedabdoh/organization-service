@@ -2,6 +2,8 @@ package com.optimagrowth.organizationservice.controller;
 
 import java.util.Locale;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.optimagrowth.organizationservice.model.Organization;
 import com.optimagrowth.organizationservice.service.OrganizationService;
 
@@ -24,6 +26,7 @@ public class OrganizationController
     @Autowired
     private OrganizationService service;
 
+    @RolesAllowed({"ADMIN", "USER"})
     @GetMapping(path = "/{organizationId}")
     public ResponseEntity<Organization> getOrganization(
         @PathVariable(name = "organizationId") String organizationId,
@@ -33,11 +36,13 @@ public class OrganizationController
         return ResponseEntity.ok(organization);
     }
 
+    @RolesAllowed({"ADMIN"})
     @PostMapping(path = "/create")
     public ResponseEntity<Organization> createOrganization(@RequestBody Organization organizationBody) {
         return ResponseEntity.ok(service.createOrganization(organizationBody));
     }
 
+    @RolesAllowed({"ADMIN"})
     @PutMapping(path = "/{organizationId}/update")
     public ResponseEntity<Organization> updateOrganization(
         @RequestBody Organization organizationBody,
@@ -46,6 +51,7 @@ public class OrganizationController
         return ResponseEntity.ok(service.updateOrganization(organizationBody, organizationId));
     }
 
+    @RolesAllowed({"ADMIN"})
     @DeleteMapping(path = "/{organizationId}/delete")
     public ResponseEntity<String> deleteOrganization(
         @PathVariable(name = "organizationId") String organizationId,
